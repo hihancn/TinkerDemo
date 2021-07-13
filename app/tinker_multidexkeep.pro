@@ -23,7 +23,7 @@
 }
 
 #your dex.loader patterns here
--keep class tinker.sample.android.app.SampleApplication {
+-keep class com.wh.tinkerdemo.app.SampleApplication {
     <init>(...);
 }
 

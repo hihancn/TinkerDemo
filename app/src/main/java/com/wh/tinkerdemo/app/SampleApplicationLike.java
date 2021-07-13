@@ -8,14 +8,20 @@ import android.os.Build;
 
 import androidx.multidex.MultiDex;
 
+import com.tencent.tinker.anno.DefaultLifeCycle;
 import com.tencent.tinker.entry.DefaultApplicationLike;
 import com.tencent.tinker.lib.tinker.Tinker;
 import com.tencent.tinker.lib.tinker.TinkerInstaller;
+import com.tencent.tinker.loader.shareutil.ShareConstants;
 import com.wh.tinkerdemo.Log.MyLogImp;
 import com.wh.tinkerdemo.util.SampleApplicationContext;
 import com.wh.tinkerdemo.util.TinkerManager;
 
+@DefaultLifeCycle(application = "com.wh.tinkerdemo.app.SampleApplication",
+        flags = ShareConstants.TINKER_ENABLE_ALL,
+        loadVerifyFlag = false)
 public class SampleApplicationLike extends DefaultApplicationLike {
+
     private static final String TAG = "Tinker.SampleApplicationLike";
 
     public SampleApplicationLike(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag,
@@ -52,4 +58,10 @@ public class SampleApplicationLike extends DefaultApplicationLike {
         TinkerManager.installTinker(this);
         Tinker tinker = Tinker.with(getApplication());
     }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    public void registerActivityLifecycleCallbacks(Application.ActivityLifecycleCallbacks callback) {
+        getApplication().registerActivityLifecycleCallbacks(callback);
+    }
+
 }

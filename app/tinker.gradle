@@ -1,15 +1,3 @@
-//def gitSha() {
-//    try {
-//        String gitRev = 'git rev-parse --short HEAD'.execute(null, project.rootDir).text.trim()
-//        if (gitRev == null) {
-//            throw new GradleException("can't get git rev, you should add git to system path or just input test value, such as 'testTinkerId'")
-//        }
-//        return gitRev
-//    } catch (Exception e) {
-//        throw new GradleException("can't get git rev, you should add git to system path or just input test value, such as 'testTinkerId'")
-//    }
-//}
-
 def bakPath = file("${buildDir}/bakApk/")
 
 /**
@@ -23,14 +11,14 @@ ext {
 
     //for normal build
     //old apk file to build patch apk
-    tinkerOldApkPath = "${bakPath}/app-debug-0424-15-02-56.apk"
+    tinkerOldApkPath = "${bakPath}/app-debug-0713-16-24-07.apk"
     //proguard mapping file to build patch apk
-    tinkerApplyMappingPath = "${bakPath}/app-debug-1018-17-32-47-mapping.txt"
+    tinkerApplyMappingPath = "${bakPath}/"
     //resource R.txt to build patch apk, must input if there is resource changed
-    tinkerApplyResourcePath = "${bakPath}/app-debug-0424-15-02-56-R.txt"
+    tinkerApplyResourcePath = "${bakPath}/app-debug-0713-16-24-07-R.txt"
 
     //only use for build all flavor, if not, just ignore this field
-    tinkerBuildFlavorDirectory = "${bakPath}/app-1018-17-32-47"
+    tinkerBuildFlavorDirectory = "${bakPath}/"
 }
 
 
@@ -46,10 +34,6 @@ def getApplyResourceMappingPath() {
     return hasProperty("APPLY_RESOURCE") ? APPLY_RESOURCE : ext.tinkerApplyResourcePath
 }
 
-//def getTinkerIdValue() {
-//    return hasProperty("TINKER_ID") ? TINKER_ID : gitSha()
-//}
-
 def buildWithTinker() {
     return hasProperty("TINKER_ENABLE") ? Boolean.parseBoolean(TINKER_ENABLE) : ext.tinkerEnabled
 }
@@ -62,6 +46,9 @@ if (buildWithTinker()) {
     apply plugin: 'com.tencent.tinker.patch'
 
     tinkerPatch {
+        allowLoaderInAnyDex = true
+        removeLoaderForAllDex = true
+
         /**
          * necessary，default 'null'
          * the old apk path, use to diff with the new apk to build

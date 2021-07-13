@@ -43,7 +43,7 @@ android {
          * you can use multiDex and install it in your ApplicationLifeCycle implement
          */
         multiDexEnabled true
-//        multiDexKeepProguard file("tinker_multidexkeep.pro")
+        multiDexKeepProguard file("tinker_multidexkeep.pro")
         /**
          * buildConfig can change during patch!
          * we can use the newly value when patch
@@ -55,7 +55,6 @@ android {
          * so we can get the newly git version easily!
          */
         buildConfigField "String", "TINKER_ID", "\"${getTinkerIdValue()}\""
-//        buildConfigField "String", "TINKER_ID", "\"100\""
         buildConfigField "String", "PLATFORM", "\"all\""
     }
 
@@ -85,5 +84,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     api("com.tencent.tinker:tinker-android-lib:${TINKER_VERSION}") { changing = true }
+    // Maven local cannot handle transist dependencies.
+    implementation("com.tencent.tinker:tinker-android-loader:${TINKER_VERSION}") { changing = true }
+    annotationProcessor("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }
+    compileOnly("com.tencent.tinker:tinker-android-anno:${TINKER_VERSION}") { changing = true }
+    compileOnly("com.tencent.tinker:tinker-android-anno-support:${TINKER_VERSION}") { changing = true }
     implementation "androidx.multidex:multidex:2.0.1"
 }
